@@ -1,0 +1,131 @@
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{fancyvrb}
+
+\title{Everything You Hoped You'll Never Have to Know About Numbers in Python}
+\subtitle{...but you really do}
+\author{Moshe Zadka -- https://cobordism.com}
+\date{2020}
+
+\begin{document}
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Numbers in Math}
+"God gave us the natural numbers;
+the rest of it we have only ourselves to blame" --
+with apologies to Leopold Kronecker
+
+\begin{itemize}
+\item Natural numbers
+\item Integers
+\item Rationals
+\item Real numbers
+\item Complex numbers
+\item Are quaternions numbers? Who knows!
+\end{itemize}
+
+\begin{frame}[fragile]
+\frametitle{Numbers in Python}
+
+\begin{itemize}
+\item \texttt{int}
+\item \texttt{float}
+\item \texttt{complex}
+\item \texttt{fractions}
+\item \texttt{decimal}
+\item Is \texttt{gmpy2} relevant? Who knows!
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Integers, division, and multiplication}
+
+\begin{lstlisting}
+>>> (4/3) * 3
+4.0
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{floats}
+
+Just memorize IEEE-754
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{floats: surprise!}
+
+\begin{lstlisting}
+>>> 1 + 2 - 2 - 1
+0
+>>> 0.1 + 0.2 - 0.2 - 0.1
+2.7755575615628914e-17
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{floats: surprise strikes again!}
+
+\begin{lstlisting}
+>>> (a + a) + 1 == a + (a + 1)
+False
+\end{lstlisting}
+\end{frame}
+
+Adding 10K numbers took over a minute on my gaming laptop.
+
+\begin{frame}[fragile]
+\frametitle{fractions: a different sort of surprise}
+
+\begin{lstlisting}
+>>> before = datetime.now()
+>>> res = sum(inverses[:10000])
+>>> after = datetime.now()
+>>> print("It took", after-before)
+>>> print("Size of output", len(str(res)))
+>>> print("Approximate value", float(res))
+It took 0:01:08.524281
+Size of output 90743
+Approximate value 1.2538568497816165
+\end{lstlisting}
+\end{frame}
+
+Converting to floats before adding took so little time,
+I don't trust the number.
+
+\begin{frame}[fragile]
+\frametitle{fractions: a different sort of surprise}
+
+\begin{lstlisting}
+>>> before = datetime.now()
+>>> res = sum(map(float, inverses[:10000]))
+>>> after = datetime.now()
+>>> print("It took", after-before)
+>>> print("Size of output", len(str(res)))
+>>> print("Approximate value", float(res))
+It took 0:00:00.003096
+Size of output 18
+Approximate value 1.2538568497816087
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{fractions: a different sort of surprise}
+
+\begin{lstlisting}
+Approximate value 1.2538568497816165 # With precise fractions
+Approximate value 1.2538568497816087 # With floats
+                    12345678901234
+\end{lstlisting}
+\end{frame}
+
+
+
+\end{document}
