@@ -28,6 +28,8 @@ with apologies to Leopold Kronecker
 \item Complex numbers
 \item Are quaternions numbers? Who knows!
 \end{itemize}
+\end{frame}
+
 
 \begin{frame}[fragile]
 \frametitle{Numbers in Python}
@@ -55,7 +57,26 @@ with apologies to Leopold Kronecker
 \begin{frame}[fragile]
 \frametitle{floats}
 
-Just memorize IEEE-754
+Just pay a \$100 for IEEE-754...\pause
+
+(if you did it before 2019, pay again, they revised it)...\pause
+
+read all 70 pages...\pause
+
+and memorize them.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{floats: IEEE-754}
+
+\begin{itemize}
+\item roundTiesToEven, the floating-point number nearest to the
+infinitely precise result shall be delivered;
+if the two nearest floating-point numbers bracketing an unrepresentable
+infinitely precise result are equally near,
+the one with an even least significant digit shall be delivered
+\end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]
@@ -74,6 +95,7 @@ Just memorize IEEE-754
 \frametitle{floats: surprise strikes again!}
 
 \begin{lstlisting}
+>>> a = 2**-53
 >>> (a + a) + 1 == a + (a + 1)
 False
 \end{lstlisting}
@@ -126,6 +148,53 @@ Approximate value 1.2538568497816087 # With floats
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Decimals: Hidden state}
 
+Quote from documentation:
+
+\begin{lstlisting}
+>>> getcontext().prec = 6
+>>> Decimal(1) / Decimal(7)
+Decimal('0.142857')
+>>> getcontext().prec = 28
+>>> Decimal(1) / Decimal(7)
+Decimal('0.1428571428571428571428571429')
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Decimals: Hidden state}
+
+Fixed it for you
+
+\begin{lstlisting}
+>>> getcontext().prec = 6
+....121 lines...
+>>> Decimal(1) / Decimal(7)
+Decimal('0.142857')
+>>> getcontext().prec = 28
+....537 lines...
+>>> Decimal(1) / Decimal(7)
+Decimal('0.1428571428571428571428571429')
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Decimals: Using correctly}
+
+\begin{lstlisting}
+>>> getcontext().prec = 6
+>>> # 6853 lines elided
+... with localcontext() as ctx:
+...     ctx.prec = 10
+...     Decimal(1) / Decimal(7)
+... 
+Decimal('0.1428571429')
+\end{lstlisting}
+
+\end{frame}
 
 \end{document}
